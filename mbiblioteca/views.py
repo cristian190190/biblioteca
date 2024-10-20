@@ -2,10 +2,10 @@ from pyexpat.errors import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from . import models as datos
 from .models import Usuario, Autor, Libro
-from .forms import UsuarioForm, UsuarioEditForm, AutorForm, LibroForm, LibroEditForm
+from .forms import UsuarioForm, UsuarioEditForm, AutorForm, LibroForm, LibroEditForm, LoginForm
 from django.utils import timezone
 from django.db.models import Q
-from django.contrib.auth import authenticate, login
+
 
 # Create your views here.
 
@@ -66,7 +66,7 @@ def crear_autor(request):
         if autor_form.is_valid():
             autor = autor_form.save()
 
-            return redirect('crear_libro', autor_id=autor.id)
+            return redirect('crear_libro')
     else:
         autor_form = AutorForm()
 
@@ -75,18 +75,12 @@ def crear_autor(request):
     })
 
 
-def crear_libro(request, autor_id):
-
-    autor = get_object_or_404(Autor, id=autor_id)
-
+def crear_libro(request):
     if request.method == 'POST':
         form = LibroForm(request.POST)
 
         if form.is_valid():
-            libro = form.save(commit=False)
-            libro.id_autor = autor
-            libro.save()
-
+            form.save()
             return redirect('libros_list')
     else:
         form = LibroForm()
@@ -132,20 +126,21 @@ def buscar_libro(request):
 
 def login_view(request):
     if request.method == 'POST':
+        form = LoginForm(request.POST)
         nombre = request.POST.get('nombre')
         contrasena = request.POST.get('contrasena')
 
         try:
             usuario = Usuario.objects.get(nombre=nombre)
             if usuario.contrasena == contrasena:
-                request.session['usuario_id'] = usuario.id
                 return redirect('index_login')
             else:
-                return render(request, 'mbiblioteca/login_view.html', {'error_message': 'Contraseña incorrecta'})
+                return render(request, 'mbiblioteca/login_view.html', {'error_message': 'Contraseña incorrecta', 'form': form})
         except Usuario.DoesNotExist:
-            return render(request, 'mbiblioteca/login_view.html', {'error_message': 'El usuario no existe'})
-
-    return render(request, 'mbiblioteca/login_view.html')
+            return render(request, 'mbiblioteca/login_view.html', {'error_message': 'El usuario no existe', 'form': form})
+    else:
+        form = LoginForm()
+    return render(request, 'mbiblioteca/login_view.html', {'form': form})
 
 
 def index_login(request):

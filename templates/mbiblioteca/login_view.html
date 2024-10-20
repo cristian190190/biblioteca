@@ -8,45 +8,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
 {% block title %}Lista de Usuarios{% endblock %}
 {% block content %}
-    <!-- Contenedor principal -->
-    <div class="container mt-5">
+    <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-4">
-                <h2 class="text-center mb-4">Iniciar Sesión</h2>
-
-                <!-- Mensaje de error -->
-                {% if error_message %}
-                <div class="alert alert-danger" role="alert">
-                    {{ error_message }}
-                </div>
-                {% endif %}
-
-                <!-- Formulario de login -->
+            <div class="col-md-6">
+                <h2 class="text-center mt-5">Iniciar Sesión</h2>
                 <form method="POST" action="{% url 'login_view' %}">
                     {% csrf_token %}
-
-                    <!-- Campo Nombre de Usuario -->
-                    <div class="form-group mb-3">
-                        <label for="nombre">Nombre de Usuario</label>
-                        <input type="text" id="nombre" name="nombre" class="form-control"
-                            placeholder="Ingrese su nombre de usuario" required>
-                    </div>
-
-                    <!-- Campo Contraseña -->
-                    <div class="form-group mb-3">
-                        <label for="contrasena">Contraseña</label>
-                        <input type="password" id="contrasena" name="contrasena" class="form-control"
-                            placeholder="Ingrese su contraseña" required>
-                    </div>
-
-                    <!-- Botón para iniciar sesión -->
-                    <div class="d-grid">
+                    {{ form.as_p }}
+                    <div class="form-group text-center">
                         <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
                     </div>
                 </form>
@@ -54,7 +29,8 @@
         </div>
     </div>
 {% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

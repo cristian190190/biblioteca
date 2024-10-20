@@ -14,18 +14,19 @@ class UsuarioForm(forms.ModelForm):
             'id_rol': 'Rol',
             'estado': 'Estado'
         }
-        
+
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su nombre', 'required': 'required', 'id': 'nombre'}),
-            
-            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su correo', 'required': 'required', 'id': 'correo', 'type' : 'email'}),
-            
+
+            'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su correo', 'required': 'required', 'id': 'correo', 'type': 'email'}),
+
             'contrasena': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su contraseña', 'required': 'required', 'id': 'contrasena'}),
-            
+
             'id_rol': forms.Select(choices=rol, attrs={'class': 'form-control', 'placeholder': 'Seleccione un rol', 'required': 'required', 'id': 'id_rol'}),
-            
+
             'estado': forms.Select(choices=estado, attrs={'class': 'form-control', 'placeholder': 'Seleccione un estado', 'required': 'required', 'id': 'estado'})
         }
+
 
 class UsuarioEditForm(forms.ModelForm):
     class Meta:
@@ -40,13 +41,14 @@ class UsuarioEditForm(forms.ModelForm):
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su nombre', 'required': 'required', 'id': 'nombre'}),
-            
+
             'correo': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su correo', 'required': 'required', 'id': 'correo'}),
-            
+
             'id_rol': forms.Select(choices=rol, attrs={'class': 'form-control', 'placeholder': 'Seleccione un rol', 'required': 'required', 'id': 'id_rol'}),
-            
+
             'estado': forms.Select(choices=estado, attrs={'class': 'form-control', 'placeholder': 'Seleccione un estado', 'required': 'required', 'id': 'estado'})
         }
+
 
 class AutorForm(forms.ModelForm):
     class Meta:
@@ -62,13 +64,13 @@ class AutorForm(forms.ModelForm):
         }
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre del autor', 'required': 'required', 'id': 'nombre'}),
-            
+
             'biografia': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Ingrese la biografía del autor', 'required': 'required', 'id': 'biografia'}),
-            
-            'fnacimiento': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la fecha de nacimiento del autor', 'required': 'required', 'id': 'fnacimiento', 'type' : 'date'}),
-            
+
+            'fnacimiento': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la fecha de nacimiento del autor', 'required': 'required', 'id': 'fnacimiento', 'type': 'date'}),
+
             'nacionalidad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la nacionalidad del autor', 'required': 'required', 'id': 'nacionalidad'}),
-            
+
             'estado': forms.Select(choices=estado, attrs={'class': 'form-control', 'placeholder': 'Seleccione un estado', 'required': 'required', 'id': 'estado'})
         }
 
@@ -76,9 +78,11 @@ class AutorForm(forms.ModelForm):
 class LibroForm(forms.ModelForm):
     class Meta:
         model = Libro
-        fields = ['titulo', 'fpublicacion', 'id_editorial', 'stock', 'nro_paginas', 'idioma', 'estado']
+        fields = ['titulo', 'id_autor', 'fpublicacion',
+                  'id_editorial', 'stock', 'nro_paginas', 'idioma', 'estado']
         labels = {
             'titulo': 'Título',
+            'id_autor': 'Autor',  # Aquí cambias el label para el campo del autor
             'fpublicacion': 'Fecha de Publicación',
             'id_editorial': 'ID de Editorial',
             'stock': 'Stock',
@@ -88,35 +92,36 @@ class LibroForm(forms.ModelForm):
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el título del libro', 'required': 'required', 'id': 'titulo'}),
-            
             'fpublicacion': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la fecha de publicación del libro', 'required': 'required', 'id': 'fpublicacion', 'type': 'date'}),
-            
             'id_editorial': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese la editorial del libro', 'required': 'required', 'id': 'id_editorial'}),
-            
             'stock': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el stock del libro', 'required': 'required', 'id': 'stock'}),
-            
             'nro_paginas': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el número de páginas del libro', 'required': 'required', 'id': 'nro_paginas'}),
-            
             'idioma': forms.Select(choices=idioma, attrs={'class': 'form-control', 'placeholder': 'Seleccione un idioma', 'required': 'required', 'id': 'idioma'}),
-            
-            'estado': forms.Select(choices=estado, attrs={'class': 'form-control', 'placeholder': 'Seleccione un estado', 'required': 'required', 'id': 'estado'})
-            
+            'estado': forms.Select(choices=estado, attrs={'class': 'form-control', 'placeholder': 'Seleccione un estado', 'required': 'required', 'id': 'estado'}),
         }
+
+    id_autor = forms.ModelChoiceField(
+        queryset=Autor.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control', 'id': 'id_autor'}),
+        required=True,
+        label="Autor"
+    )
 
 
 class LibroEditForm(forms.ModelForm):
     class Meta:
         model = Libro
-        fields = ['titulo', 'fpublicacion', 'id_editorial',
+        fields = ['titulo', 'id_autor', 'fpublicacion', 'id_editorial',
                   'stock', 'nro_paginas', 'idioma', 'estado']
-        labels = {
+        {
             'titulo': 'Título',
+            'id_autor': 'Autor',  # Aquí cambias el label para el campo del autor
             'fpublicacion': 'Fecha de Publicación',
-            'id_editorial': 'Editorial',
+            'id_editorial': 'ID de Editorial',
             'stock': 'Stock',
             'nro_paginas': 'Número de Páginas',
             'idioma': 'Idioma',
-            'estado': 'Estado',
+            'estado': 'Estado'
         }
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el título del libro', 'required': 'required', 'id': 'titulo'}),
@@ -130,6 +135,28 @@ class LibroEditForm(forms.ModelForm):
             'nro_paginas': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el número de páginas del libro', 'required': 'required', 'id': 'nro_paginas'}),
 
             'idioma': forms.Select(choices=idioma, attrs={'class': 'form-control', 'placeholder': 'Seleccione un idioma', 'required': 'required', 'id': 'idioma'}),
-            
+
             'estado': forms.Select(choices=estado, attrs={'class': 'form-control', 'placeholder': 'Seleccione un estado', 'required': 'required', 'id': 'estado'})
         }
+
+    id_autor = forms.ModelChoiceField(
+        queryset=Autor.objects.all(),
+        widget=forms.Select(
+            attrs={'class': 'form-control', 'id': 'id_autor'}),
+        required=True,
+        label="Autor"
+    )
+
+
+class LoginForm(forms.Form):
+    nombre = forms.CharField(
+        label='Nombre de Usuario',
+        max_length=100,
+        widget=forms.TextInput(attrs={
+                               'class': 'form-control', 'placeholder': 'Nombre de Usuario', 'required': 'required'})
+    )
+    contrasena = forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput(
+            attrs={'class': 'form-control', 'placeholder': 'Contraseña', 'required': 'required'})
+    )
