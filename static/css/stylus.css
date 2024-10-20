@@ -1,0 +1,34 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #dec5fc;
+  margin: 0;
+  padding: 20px;
+}
+/* Estilos para los títulos (h1, h2) */
+h1 {
+  color: #7b3ef4;
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+h2 {
+  color: #7b3ef4;
+  font-size: 2em;
+  text-align: left;
+  margin-bottom: 15px;
+}
+/* Estilos para la foto */
+.foto {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+/* Estilos para la sección de data */
+li {
+  font-size: 1.2em;
+  color: #f50a0a;
+  line-height: 1.6;
+}
